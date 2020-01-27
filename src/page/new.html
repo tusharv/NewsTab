@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>NewsTab</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../image/icon128.png" type="image/x-png">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/moment.min.js"></script>
+    <script src="../js/script.js" defer></script>
+  </head>  
+  <body>
+    <div class="news">
+      <div class="searchBox sticky">
+        <input id="search" placeholder="Search news from here" autofocus autocomplete="off"/>
+        <p class="newsResults"></p>
+      </div>
+      
+    </div>
+    <div class="footer">
+      <form action="">
+        <label for="countrySelector">Country: </label>
+        <select id="countrySelector">
+          <option selected disabled hidden>Select Country</option>
+        </select>
+        <label for="categorySelector">Category: </label>
+        <select id="categorySelector">
+          <option selected disabled hidden>Select Category</option>
+        </select>
+      </form>
+      <div class="attribution">
+        <a href="https://newsapi.org " alt="News API" target="_blank">Powered by News API</a>
+      </div>
+    </div>
+    <template id="newstemplate">
+      <div class="newsBox">
+        <div class="imageBox">
+          <p class="newsCount"></p>
+          <img class="newsImage"/>
+        </div>
+        <a class="newsTitle" target="_blank"></a>
+        <p class="newsAuthor"></p>
+        <p class="newsDescription"></p>  
+      </div>
+    </template>
+  </body>
+</html>
