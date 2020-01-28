@@ -14,6 +14,11 @@ input, select, option {
   font-family: 'Titillium Web', sans-serif;
 }
 
+.search {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
 #search {
   width: 100%;
   padding: 5px;
@@ -131,4 +136,24 @@ input, select, option {
   background-color: #FFF;
   z-index: 10;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Theme 2*/
+.card-theme {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: calc(100% - 30px);
+}
+
+.card-theme .newsBox {
+  margin: 10px;
+  width: 20vw;
+  min-width: 300px;
+  flex-grow: 1;
+}
+
+.card-theme .newsTitle {
+  font-size: 18px;
 }

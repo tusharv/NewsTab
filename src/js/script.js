@@ -1,7 +1,8 @@
 const DETAULTS = {
     COUNTRY: "in",
     CATEGORY: "general",
-    PAGESIZE: 25
+    THEME: 'single',
+    PAGESIZE: 20
   }
   
   const URLS = {
@@ -13,6 +14,7 @@ const DETAULTS = {
   const LOCALSTORAGE = {
     COUNTRY: 'country',
     CATEGORY: 'category',
+    THEME: 'theme',
     PAGESIZE: 'pagesize'
   }
   
@@ -319,6 +321,17 @@ const DETAULTS = {
       display: 'Technology'
     },
   }
+
+  const THEME_LIST = {
+    single: {
+      name: 'single',
+      display: 'Single Column'
+    },
+    multi: {
+      name: 'multi',
+      display: 'Multi Column'
+    },
+  }
   
   function fetchFeed(url) {
     makeRequest(url)
@@ -428,6 +441,25 @@ const DETAULTS = {
     localStorage.setItem(LOCALSTORAGE.CATEGORY, e.target.value);
     window.location.href = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
   }
+
+  function updateTheme(e){
+    changeTheme(e.target.value);
+  }
+
+  function changeTheme(theme = DETAULTS.THEME){
+    switch (theme){
+      case 'single':
+          document.querySelector('.news').classList.remove('card-theme');
+          localStorage.setItem(LOCALSTORAGE.THEME, theme);
+          break;
+      case 'multi':
+          document.querySelector('.news').classList.add('card-theme');
+          localStorage.setItem(LOCALSTORAGE.THEME, theme);
+          break;
+      default:
+          break;
+    }
+  }
   
   function populateList(elem, group, key){
     let list = Object.keys(group);
@@ -479,12 +511,15 @@ const DETAULTS = {
     
     let countrySelector = document.querySelector('#countrySelector');
     let categorySelector = document.querySelector('#categorySelector');
+    let themeSelector = document.querySelector('#themeSelector');
     
     populateList(countrySelector, COUNTRY_LIST, LOCALSTORAGE.COUNTRY);
     populateList(categorySelector, CATEGORY_LIST, LOCALSTORAGE.CATEGORY);
+    populateList(themeSelector, THEME_LIST, LOCALSTORAGE.THEME);
     
     countrySelector.addEventListener('change', updateCountry);
     categorySelector.addEventListener('change', updateCategory);
+    themeSelector.addEventListener('change', updateTheme);
   
     updateTitle();
   }

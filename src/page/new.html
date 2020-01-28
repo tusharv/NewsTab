@@ -4,19 +4,20 @@
     <title>NewsTab</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="shortcut icon" href="../image/icon128.png" type="image/x-png">
     <link rel="stylesheet" href="../css/style.css">
     <script src="../js/moment.min.js"></script>
     <script src="../js/script.js" defer></script>
   </head>  
   <body>
-    <div class="news">
+    <div class="search">
       <div class="searchBox sticky">
         <input id="search" placeholder="Search news from here" autofocus autocomplete="off"/>
         <p class="newsResults"></p>
       </div>
-      
+    </div>
+    <div class="news">
     </div>
     <div class="footer">
       <form action="">
@@ -27,6 +28,10 @@
         <label for="categorySelector">Category: </label>
         <select id="categorySelector">
           <option selected disabled hidden>Select Category</option>
+        </select>
+        <label for="themeSelector">Theme: </label>
+        <select id="themeSelector">
+          <option selected disabled hidden>Select Theme</option>
         </select>
       </form>
       <div class="attribution">
