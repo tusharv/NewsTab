@@ -522,6 +522,8 @@ const DETAULTS = {
     themeSelector.addEventListener('change', updateTheme);
   
     updateTitle();
+
+    changeTheme((localStorage.getItem(LOCALSTORAGE.THEME) || DETAULTS.THEME));
   }
   
   if (document.readyState === "loading") {
