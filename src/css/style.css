@@ -91,6 +91,7 @@ input, select, option {
 
 .imageBox {
   position: relative;
+  overflow: hidden;
 }
 
 .newsCount {
@@ -104,6 +105,7 @@ input, select, option {
   opacity: 0.35;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
   user-select: none;
+  z-index: 10;
 }
 
 .newsImage {
@@ -156,4 +158,12 @@ input, select, option {
 
 .card-theme .newsTitle {
   font-size: 18px;
+}
+
+.grow { 
+  transition: all 2s ease-in-out; 
+}
+
+.grow:hover {
+  transform: scale(1.03); 
 }
