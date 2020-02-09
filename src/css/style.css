@@ -58,6 +58,24 @@ input, select, option {
   z-index: 11;
 }
 
+.close {
+  position: absolute;
+  top: 25px;
+  right: 40px;
+  padding: 3px 5px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  border-color: transparent;
+  cursor: pointer;
+  transition: opacity 1s ease-out;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+}
+
 .newsResults {
   font-size: 10px;
   font-style: italic;

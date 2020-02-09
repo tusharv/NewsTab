@@ -414,8 +414,16 @@ const DETAULTS = {
   }
   
   function onSearch(e){
-    if (e.keyCode === 13 && e.target.value.length > 0) {
+    let closeButton = document.querySelector('.close');
+    if(e.target.value.length > 0){
+      closeButton.classList.remove('hidden');
+      if (e.keyCode === 13) {
       window.location.href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?q=${e.target.value}`;
+      }else if(e.keyCode === 27) {
+        clearSearch(e.target, closeButton);
+      }
+    }else{
+      closeButton.classList.add('hidden');
     }
   }
   
@@ -484,16 +492,30 @@ const DETAULTS = {
     document.querySelector('title').innerText = `${category} News from ${country}`;
   }
   
+  function clearSearch(search, closeButton){
+    closeButton.classList.add('hidden');
+    search.value = "";
+    search.focus();
+
+    let u = new URL(document.URL);
+    u.search = "";
+    window.location.href = u.href;
+  }
+  
   function init() {
     let search = document.getElementById('search');
+    let closeButton = document.querySelector('.close');
     let d = new Date();
     
     if(search) search.addEventListener('keydown', onSearch);
-    
-    let param = getParams(window.location.href);
+    if(closeButton) closeButton.addEventListener('click', (e)=>{
+      clearSearch(search, closeButton);
+    })
     
     if(param.q){
       search.value = param.q;
+      closeButton.classList.remove('hidden');
+      
       fetchFeed(
         URLS.QUERYURL
           .replace('#QUERY#',param.q)
