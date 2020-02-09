@@ -2,7 +2,7 @@
   "name": "NewsTab",
   "short_name" : "NewsTab",
   "description": "News at your NewTab",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "chrome_url_overrides": {
     "newtab": "page/new.html"
   },
