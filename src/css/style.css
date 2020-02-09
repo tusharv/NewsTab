@@ -55,6 +55,7 @@ input, select, option {
 .sticky {
   position: sticky;
   top: 0;
+  z-index: 11;
 }
 
 .newsResults {
