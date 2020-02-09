@@ -334,13 +334,14 @@ const DETAULTS = {
   }
   
   function fetchFeed(url) {
+    let loader = document.querySelector('.spinner');
     makeRequest(url)
       .then(res => {
-        let { articles, totalResults } = JSON.parse(res.responseText);
-        loadNews(articles, totalResults);
+          loader.classList.add('hidden');
       })
       .catch(err => {
         console.log(err);
+        loader.classList.remove('hidden');
       });
   }
   
