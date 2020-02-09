@@ -337,30 +337,44 @@ const DETAULTS = {
   
   function fetchFeed(url) {
     let loader = document.querySelector('.spinner');
+    let message = document.querySelector('.message');
+    let newsContainer = document.querySelector(".news");
+
     makeRequest(url)
       .then(res => {
+        let { articles, totalResults, status } = JSON.parse(res.responseText);
+        if(status.toLocaleLowerCase() === 'ok'){
+          loadNews(articles, totalResults, new Date());
           loader.classList.add('hidden');
+        }
       })
       .catch(err => {
         console.log(err);
+
+        newsContainer.classList.add('error');
+
         loader.classList.remove('hidden');
+        message.classList.remove('hidden');
+
+        message.innerHTML = err.statusText;
       });
   }
   
-  function loadNews(articles, totalResults) {
+  function loadNews(articles, totalResults, lastUpdateTime) {
     let newsContainer = document.querySelector(".news");
     let template = document.querySelector("#newstemplate");
     let results = document.querySelector('.newsResults');
+    let lastUpdated = document.querySelector('.newsLastUpdated');
     results.innerHTML = `Total <strong>${totalResults}</strong> results found`;
-    
+    lastUpdated.innerHTML = moment(lastUpdateTime).fromNow();
   
     articles.forEach((article, index) => {
 
-      if(article.author === null){
+      if(article.author === null || article.author.length === 0){
         article.author = article.source.name;
       }
   
-      if(article.content === null){
+      if(article.content === null || article.content.length === 0){
         article.content = "Click link to know more..";
       }
       
@@ -421,7 +435,7 @@ const DETAULTS = {
     if(e.target.value.length > 0){
       closeButton.classList.remove('hidden');
       if (e.keyCode === 13) {
-      window.location.href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?q=${e.target.value}`;
+        window.location.href = `${window.location.protocol}//${window.location.host}${window.location.pathname}?q=${e.target.value}`;
       }else if(e.keyCode === 27) {
         clearSearch(e.target, closeButton);
       }
@@ -494,7 +508,7 @@ const DETAULTS = {
   
     document.querySelector('title').innerText = `${category} News from ${country}`;
   }
-  
+
   function clearSearch(search, closeButton){
     closeButton.classList.add('hidden');
     search.value = "";
@@ -506,15 +520,19 @@ const DETAULTS = {
   }
   
   function init() {
+    let param = getParams(window.location.href);
     let search = document.getElementById('search');
     let closeButton = document.querySelector('.close');
+    let countrySelector = document.querySelector('#countrySelector');
+    let categorySelector = document.querySelector('#categorySelector');
+    let themeSelector = document.querySelector('#themeSelector');
     let d = new Date();
     
     if(search) search.addEventListener('keydown', onSearch);
     if(closeButton) closeButton.addEventListener('click', (e)=>{
       clearSearch(search, closeButton);
     })
-    
+
     if(param.q){
       search.value = param.q;
       closeButton.classList.remove('hidden');
@@ -534,11 +552,6 @@ const DETAULTS = {
           .replace('#PAGE#', (localStorage.getItem(LOCALSTORAGE.PAGE) || DETAULTS.PAGE))
         );  
     }
-  
-    
-    let countrySelector = document.querySelector('#countrySelector');
-    let categorySelector = document.querySelector('#categorySelector');
-    let themeSelector = document.querySelector('#themeSelector');
     
     populateList(countrySelector, COUNTRY_LIST, LOCALSTORAGE.COUNTRY);
     populateList(categorySelector, CATEGORY_LIST, LOCALSTORAGE.CATEGORY);
