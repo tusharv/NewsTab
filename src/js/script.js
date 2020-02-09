@@ -2,12 +2,13 @@ const DETAULTS = {
     COUNTRY: "in",
     CATEGORY: "general",
     THEME: 'single',
-    PAGESIZE: 20
+    PAGESIZE: 20,
+    PAGE: 1
   }
   
   const URLS = {
-    FEEDURL: "https://newsapi.org/v2/top-headlines?country=#COUNTRY#&category=#CATEGORY#&pagesize=#PAGESIZE#",
-    QUERYURL: "https://newsapi.org/v2/everything?q=#QUERY#&from=#DATE#&sortBy=publishedAt",
+    FEEDURL: "https://newsapi.org/v2/top-headlines?country=#COUNTRY#&category=#CATEGORY#&pagesize=#PAGESIZE#&page=#PAGE#",
+    QUERYURL: "https://newsapi.org/v2/everything?q=#QUERY#&from=#DATE#&sortBy=publishedAt&page=#PAGE#",
     FALLBACK_IMAGE: 'https://via.placeholder.com/500/000000/FFFFFF/?text=Image%20Not%20Found',
   }
   
@@ -15,7 +16,8 @@ const DETAULTS = {
     COUNTRY: 'country',
     CATEGORY: 'category',
     THEME: 'theme',
-    PAGESIZE: 'pagesize'
+    PAGESIZE: 'pagesize',
+    PAGE: 'page'
   }
   
   const COUNTRY_LIST = {
@@ -520,14 +522,16 @@ const DETAULTS = {
       fetchFeed(
         URLS.QUERYURL
           .replace('#QUERY#',param.q)
-          .replace('#DATE#',`${d.getFullYear()}-${"0" + d.getMonth()+1}-${d.getDate()}`
-      ));
+          .replace('#DATE#',`${d.getFullYear()}-${"0" + d.getMonth()+1}-${d.getDate()}`)
+          .replace('#PAGE#', localStorage.getItem(LOCALSTORAGE.PAGE) || DETAULTS.PAGE)
+        );
     }else{
       fetchFeed(
         URLS.FEEDURL
           .replace('#COUNTRY#', (localStorage.getItem(LOCALSTORAGE.COUNTRY) || DETAULTS.COUNTRY))
           .replace('#CATEGORY#', (localStorage.getItem(LOCALSTORAGE.CATEGORY) || DETAULTS.CATEGORY))
           .replace('#PAGESIZE#', (localStorage.getItem(LOCALSTORAGE.PAGESIZE) || DETAULTS.PAGESIZE))
+          .replace('#PAGE#', (localStorage.getItem(LOCALSTORAGE.PAGE) || DETAULTS.PAGE))
         );  
     }
   
