@@ -1,4 +1,4 @@
-const DETAULTS = {
+const DEFAULTS = {
     COUNTRY: "in",
     CATEGORY: "general",
     THEME: 'single',
@@ -471,7 +471,7 @@ const DETAULTS = {
     changeTheme(e.target.value);
   }
 
-  function changeTheme(theme = DETAULTS.THEME){
+  function changeTheme(theme = DEFAULTS.THEME){
     switch (theme){
       case 'single':
           document.querySelector('.news').classList.remove('card-theme');
@@ -503,8 +503,8 @@ const DETAULTS = {
   }
   
   function updateTitle(){
-    let country = COUNTRY_LIST[(localStorage.getItem(LOCALSTORAGE.COUNTRY) || DETAULTS.COUNTRY)].display;
-    let category = CATEGORY_LIST[(localStorage.getItem(LOCALSTORAGE.CATEGORY) || DETAULTS.CATEGORY)].display;
+    let country = COUNTRY_LIST[(localStorage.getItem(LOCALSTORAGE.COUNTRY) || DEFAULTS.COUNTRY)].display;
+    let category = CATEGORY_LIST[(localStorage.getItem(LOCALSTORAGE.CATEGORY) || DEFAULTS.CATEGORY)].display;
   
     document.querySelector('title').innerText = `${category} News from ${country}`;
   }
@@ -541,15 +541,15 @@ const DETAULTS = {
         URLS.QUERYURL
           .replace('#QUERY#',param.q)
           .replace('#DATE#',`${d.getFullYear()}-${"0" + d.getMonth()+1}-${d.getDate()}`)
-          .replace('#PAGE#', localStorage.getItem(LOCALSTORAGE.PAGE) || DETAULTS.PAGE)
+          .replace('#PAGE#', localStorage.getItem(LOCALSTORAGE.PAGE) || DEFAULTS.PAGE)
         );
     }else{
       fetchFeed(
         URLS.FEEDURL
-          .replace('#COUNTRY#', (localStorage.getItem(LOCALSTORAGE.COUNTRY) || DETAULTS.COUNTRY))
-          .replace('#CATEGORY#', (localStorage.getItem(LOCALSTORAGE.CATEGORY) || DETAULTS.CATEGORY))
-          .replace('#PAGESIZE#', (localStorage.getItem(LOCALSTORAGE.PAGESIZE) || DETAULTS.PAGESIZE))
-          .replace('#PAGE#', (localStorage.getItem(LOCALSTORAGE.PAGE) || DETAULTS.PAGE))
+          .replace('#COUNTRY#', (localStorage.getItem(LOCALSTORAGE.COUNTRY) || DEFAULTS.COUNTRY))
+          .replace('#CATEGORY#', (localStorage.getItem(LOCALSTORAGE.CATEGORY) || DEFAULTS.CATEGORY))
+          .replace('#PAGESIZE#', (localStorage.getItem(LOCALSTORAGE.PAGESIZE) || DEFAULTS.PAGESIZE))
+          .replace('#PAGE#', (localStorage.getItem(LOCALSTORAGE.PAGE) || DEFAULTS.PAGE))
         );  
     }
     
@@ -563,7 +563,7 @@ const DETAULTS = {
   
     updateTitle();
 
-    changeTheme((localStorage.getItem(LOCALSTORAGE.THEME) || DETAULTS.THEME));
+    changeTheme((localStorage.getItem(LOCALSTORAGE.THEME) || DEFAULTS.THEME));
   }
   
   if (document.readyState === "loading") {
