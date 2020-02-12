@@ -3,7 +3,8 @@ const DEFAULTS = {
     CATEGORY: "general",
     THEME: 'single',
     PAGESIZE: 20,
-    PAGE: 1
+    PAGE: 1,
+    FEED_TIME: 600
   }
   
   const URLS = {
@@ -17,7 +18,10 @@ const DEFAULTS = {
     CATEGORY: 'category',
     THEME: 'theme',
     PAGESIZE: 'pagesize',
-    PAGE: 'page'
+    PAGE: 'page',
+    LAST_SUCCESS: 'feed-last-success',
+    LAST_URL: 'feed-last-url',
+    LAST_RESULT: 'feed-last-result'
   }
   
   const COUNTRY_LIST = {
@@ -335,22 +339,35 @@ const DEFAULTS = {
     },
   }
   
+  function shouldLoad(url){
+    // 
+    if((new Date() - new Date(localStorage.getItem(LOCALSTORAGE.LAST_SUCCESS))) / 1000 > DEFAULTS.FEED_TIME){
+      return true;
+    }
+
+    //
+    if(url !== localStorage.getItem(LOCALSTORAGE.LAST_URL)){
+      return true;
+    }
+
+    return false;
+  }
+
   function fetchFeed(url) {
     let loader = document.querySelector('.spinner');
     let message = document.querySelector('.message');
     let newsContainer = document.querySelector(".news");
 
-    makeRequest(url)
+    if(shouldLoad(url)){
+      makeRequest(url)
       .then(res => {
         let { articles, totalResults, status } = JSON.parse(res.responseText);
         if(status.toLocaleLowerCase() === 'ok'){
-          loadNews(articles, totalResults, new Date());
+          loadNews(articles, totalResults, localStorage.getItem(LOCALSTORAGE.LAST_SUCCESS));
           loader.classList.add('hidden');
         }
       })
       .catch(err => {
-        console.log(err);
-
         newsContainer.classList.add('error');
 
         loader.classList.remove('hidden');
@@ -358,6 +375,11 @@ const DEFAULTS = {
 
         message.innerHTML = err.statusText;
       });
+    }else{
+      let { articles, totalResults } = JSON.parse(localStorage.getItem(LOCALSTORAGE.LAST_RESULT));
+      loadNews(articles, totalResults, localStorage.getItem(LOCALSTORAGE.LAST_SUCCESS));
+      loader.classList.add('hidden');
+    }
   }
   
   function loadNews(articles, totalResults, lastUpdateTime) {
@@ -402,7 +424,6 @@ const DEFAULTS = {
         img.addEventListener("error", function(e){
           e.target.setAttribute("src", URLS.FALLBACK_IMAGE);
         });
-        
       }
     });
   }
@@ -415,6 +436,9 @@ const DEFAULTS = {
         if (request.readyState !== 4) return;
   
         if (request.status >= 200 && request.status < 300) {
+          localStorage.setItem(LOCALSTORAGE.LAST_SUCCESS, new Date());
+          localStorage.setItem(LOCALSTORAGE.LAST_URL, url);
+          localStorage.setItem(LOCALSTORAGE.LAST_RESULT, request.responseText);
           resolve(request);
         } else {
           reject({
@@ -518,20 +542,12 @@ const DEFAULTS = {
     u.search = "";
     window.location.href = u.href;
   }
-  
-  function init() {
+
+  function refreshFeed(){
     let param = getParams(window.location.href);
     let search = document.getElementById('search');
     let closeButton = document.querySelector('.close');
-    let countrySelector = document.querySelector('#countrySelector');
-    let categorySelector = document.querySelector('#categorySelector');
-    let themeSelector = document.querySelector('#themeSelector');
     let d = new Date();
-    
-    if(search) search.addEventListener('keydown', onSearch);
-    if(closeButton) closeButton.addEventListener('click', (e)=>{
-      clearSearch(search, closeButton);
-    })
 
     if(param.q){
       search.value = param.q;
@@ -552,6 +568,40 @@ const DEFAULTS = {
           .replace('#PAGE#', (localStorage.getItem(LOCALSTORAGE.PAGE) || DEFAULTS.PAGE))
         );  
     }
+  }
+
+  function clear() {
+
+    localStorage.removeItem(LOCALSTORAGE.LAST_SUCCESS);
+    localStorage.removeItem(LOCALSTORAGE.LAST_URL);
+    localStorage.removeItem(LOCALSTORAGE.LAST_RESULT);
+
+    document.querySelectorAll('.newsBox').forEach((e)=>{e.parentNode.removeChild(e)});
+    document.querySelector('.newsResults').innerHTML = "";
+    document.querySelector('.newsLastUpdated').innerHTML = "";
+    document.querySelector('.spinner').classList.remove('hidden');
+  }
+
+  function onRefresh() {
+    clear();
+    refreshFeed();
+  }
+
+  function init() {
+    let search = document.getElementById('search');
+    let closeButton = document.querySelector('.close');
+    let countrySelector = document.querySelector('#countrySelector');
+    let categorySelector = document.querySelector('#categorySelector');
+    let themeSelector = document.querySelector('#themeSelector');
+    let refresh = document.querySelector('.refresh');
+    
+    if(search) search.addEventListener('keydown', onSearch);
+    if(closeButton) closeButton.addEventListener('click', (e)=>{
+      clearSearch(search, closeButton);
+    })
+    if(refresh) refresh.addEventListener('click', onRefresh);
+
+    refreshFeed();
     
     populateList(countrySelector, COUNTRY_LIST, LOCALSTORAGE.COUNTRY);
     populateList(categorySelector, CATEGORY_LIST, LOCALSTORAGE.CATEGORY);
