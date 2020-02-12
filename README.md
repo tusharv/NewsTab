@@ -28,6 +28,14 @@ Icon made by https://freeicons.io/profile/730 from www.freeicons.io
 - News from https://newsapi.org/
 - Icon made by https://freeicons.io/profile/730 from www.freeicons.io
 
+
+## Hack for FireFox
+FireFox is showing warning for `__MACOSX/` folder and it's content.
+Use Following command to remove `__MACOSX/` from zip
+```
+zip -d NewsTab-v0.0.x.zip "__MACOSX*"
+```
+
 ## Issues
 
 Feel free to submit issues and feature requests.
