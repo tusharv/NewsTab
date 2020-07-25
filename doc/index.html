@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>NewsTab</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="../image/icon128.png" type="image/x-png">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/moment.min.js"></script>
+    <script src="./js/script.js" defer></script>
+  </head>  
+  <body>
+    <div class="search sticky">
+      <div class="searchBox">
+        <input id="search" placeholder="Search news from here" autofocus autocomplete="off" tabindex="1"/>
+        <button class="close hidden" tabindex="2">✕</button>
+        <p class="newsResults"></p>
+        <button class="refresh right">Refresh Now</button>
+        <p class="newsLastUpdated"></p>
+      </div>
+    </div>
+    <div class="news">
+      <div class="spinner">
+      </div>
+      <p class="message hidden"></p>
+    </div>
+    <div class="footer">
+      <form action="" id="footer-form">
+        <span class="section">
+          <label for="countrySelector">Country: </label>
+          <select id="countrySelector">
+            <option selected disabled hidden>Select Country</option>
+          </select>
+        </span>
+        <span class="section">
+          <label for="categorySelector">Category: </label>
+          <select id="categorySelector">
+            <option selected disabled hidden>Select Category</option>
+          </select>
+        </span>
+        <span class="section">
+          <label for="themeSelector">Theme: </label>
+          <select id="themeSelector">
+            <option selected disabled hidden>Select Theme</option>
+          </select>
+        </span>
+        
+      </form>
+      <div class="attribution">
+        <a href="https://newsapi.org " alt="News API" target="_blank">Powered by News API</a>
+      </div>
+    </div>
+    <template id="newstemplate">
+      <div class="newsBox">
+        <div class="imageBox">
+          <p class="newsCount"></p>
+          <img class="newsImage grow"/>
+        </div>
+        <a class="newsTitle" target="_blank"></a>
+        <p class="newsAuthor"></p>
+        <p class="newsDescription"></p>  
+      </div>
+    </template>
+  </body>
+</html>
