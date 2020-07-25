@@ -436,7 +436,7 @@ const DEFAULTS = {
         if (request.readyState !== 4) return;
   
         if (request.status >= 200 && request.status < 300) {
-          localStorage.setItem(LOCALSTORAGE.LAST_SUCCESS, new Date());
+          localStorage.setItem(LOCALSTORAGE.LAST_SUCCESS, new Date().toISOString());
           localStorage.setItem(LOCALSTORAGE.LAST_URL, url);
           localStorage.setItem(LOCALSTORAGE.LAST_RESULT, request.responseText);
           resolve(request);
